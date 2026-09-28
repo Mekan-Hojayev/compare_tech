@@ -339,6 +339,18 @@
     border: 1px solid var(--border); background: var(--bg); color: var(--muted-2); font-family: 'IBM Plex Mono', monospace;
   }
   .foot-btn:hover { color: var(--accent); border-color: var(--accent); }
+  #panel-legend {
+    display: flex; justify-content: center; flex-wrap: wrap; gap: 4px 14px; padding: 7px 12px;
+    border-top: 1px solid var(--border); flex-shrink: 0; font-size: 10.5px; color: var(--muted-2);
+  }
+  .lg-item { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+  .side-tag {
+    display: inline-flex; align-items: center; justify-content: center; width: 15px; height: 15px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 600; border-radius: 3px; color: #fff;
+    letter-spacing: 0; flex-shrink: 0;
+  }
+  .side-tag.L { background: #1d4ed8; }
+  .side-tag.R { background: #166534; }
   .foot-hint { margin-left: auto; align-self: center; font-size: 10px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; }
 
   #panel-toggle {
@@ -465,9 +477,9 @@
 <div class="workspace">
   <div class="docs">
     <div class="pane-labels">
-      <div class="pane-label"><span class="pl-role">◂ Доверенность</span><span class="pl-file">— ДОВЕРЕННОСТЬ.docx</span>
+      <div class="pane-label"><span class="side-tag L" title="Л — документ на левой стороне">Л</span><span class="pl-role">Доверенность</span><span class="pl-file">— ДОВЕРЕННОСТЬ.docx</span>
         <a class="dl-btn" id="dl-poa" title="Скачать оригинал .docx">⬇ .docx</a></div>
-      <div class="pane-label"><span class="pl-role">▸ Договор</span><span class="pl-file">— С_1167_8_ТИ-355 от 29.12.2026.docx</span>
+      <div class="pane-label"><span class="side-tag R" title="П — документ на правой стороне">П</span><span class="pl-role">Договор</span><span class="pl-file">— С_1167_8_ТИ-355 от 29.12.2026.docx</span>
         <a class="dl-btn" id="dl-contract" title="Скачать оригинал .docx">⬇ .docx</a></div>
     </div>
     <div class="panes">
@@ -495,6 +507,10 @@
       <div id="overall-slot"></div>
       <div id="cards-slot"></div>
       <div id="panel-empty">Нет атрибутов с таким статусом</div>
+    </div>
+    <div id="panel-legend">
+      <span class="lg-item"><span class="side-tag L">Л</span>документ на левой стороне</span>
+      <span class="lg-item"><span class="side-tag R">П</span>документ на правой стороне</span>
     </div>
     <div id="panel-footer">
       <button class="foot-btn" id="json-open" type="button">{ } JSON результата</button>
@@ -665,7 +681,7 @@
     const evs = EVIDENCE.filter(e => e.attrs.includes(c.key));
     const chips = evs.map(e =>
       '<button type="button" class="ev-chip" data-go="' + e.id + '" title="' + esc((e.side === 'L' ? 'Доверенность' : 'Договор') + ': ' + e.label) + '">' +
-      '<span class="cs ' + e.side + '">' + (e.side === 'L' ? 'Д' : 'К') + '</span>' +
+      '<span class="cs ' + e.side + '">' + (e.side === 'L' ? 'Л' : 'П') + '</span>' +
       '<span class="ct">' + esc(e.label) + '</span></button>').join('');
     div.innerHTML =
       '<div class="pi-dot"></div><div class="ac-body">' +
@@ -682,7 +698,7 @@
   const TITLE_OF = Object.fromEntries(CARDS.map(c => [c.key, c.num + '. ' + c.title]));
   const chipHtml = e =>
     '<button type="button" class="ev-chip" data-go="' + e.id + '" title="' + esc((e.side === 'L' ? 'Доверенность' : 'Договор') + ': ' + e.label) + '">' +
-    '<span class="cs ' + e.side + '">' + (e.side === 'L' ? 'Д' : 'К') + '</span>' +
+    '<span class="cs ' + e.side + '">' + (e.side === 'L' ? 'Л' : 'П') + '</span>' +
     '<span class="ct">' + esc(e.label) + '</span></button>';
   const REVIEW = ov.items_to_review.map((text, i) => ({ key: 'r' + i, text, attr: LINKS.review[i].attr, ev: LINKS.review[i].ev }));
   if (REVIEW.length) {
